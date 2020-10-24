@@ -1,6 +1,8 @@
 package com.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.security.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.*;
@@ -10,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -30,22 +33,18 @@ import java.util.Map;
 // 顾名思义，@PreAuthorize注解会在方法执行前进行验证，而@PostAuthorize 注解在方法执行后进行验证。
 //securedEnabled=true会解锁@Secured注解。
 public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private UserService userService;
+
     @Bean
     PasswordEncoder passwordEncoder(){
-        //密码加密，使用NoOpPasswordEncoder即不加密
-        return NoOpPasswordEncoder.getInstance();
+        //密码加密
+        return new BCryptPasswordEncoder();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //root有ADMIN和DBA角色，admin有ADMIN和USER角色，cc有USER角色
-
-        auth.inMemoryAuthentication()
-                .withUser("root").password("123").roles("ADMIN","DBA")
-                .and()
-                .withUser("admin").password("123").roles("ADMIN","USER")
-                .and()
-                .withUser("user").password("123").roles("USER");
+        auth.userDetailsService(userService);
     }
 
     @Override

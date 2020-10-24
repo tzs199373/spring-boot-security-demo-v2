@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.mybatis.mapper.UserMapper">
+    <select id="getUserByName" resultType="User">
+        SELECT * FROM user WHERE username = #{username};
+    </select>
+
+    <select id="getRolesById" resultType="Role">
+        SELECT * FROM role WHERE id in (SELECT rid from user_role WHERE uid = #{uid})
+    </select>
+</mapper>

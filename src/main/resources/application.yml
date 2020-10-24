@@ -1,0 +1,19 @@
+server:
+  port: 8081
+spring:
+  #数据库连接配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test2?serverTimezone=UTC
+    username: root
+    password: accp
+
+#mybatis的相关配置
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  #实体类
+  type-aliases-package: com.security.model
+  #开启驼峰命名
+  configuration:
+    map-underscore-to-camel-case: true
