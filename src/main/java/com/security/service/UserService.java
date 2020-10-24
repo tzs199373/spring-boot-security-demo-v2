@@ -20,6 +20,6 @@ public class UserService implements UserDetailsService{
             throw new UsernameNotFoundException("username not exist");
         }
         user.setRoleList(userMapper.getRolesById(user.getId()));
-        return null;
+        return user;
     }
 }
