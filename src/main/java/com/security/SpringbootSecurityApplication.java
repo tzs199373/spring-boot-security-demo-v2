@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.security.mapperr")//使用MapperScan批量扫描所有的Mapper接口；
+@MapperScan("com.security.mapper")//使用MapperScan批量扫描所有的Mapper接口；
 public class SpringbootSecurityApplication {
 
 	public static void main(String[] args) {
