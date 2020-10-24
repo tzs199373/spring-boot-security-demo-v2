@@ -29,16 +29,16 @@ import java.util.Map;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true)
-//prePostEnabled=trueä¼šè§£é”@PreAuthorizeå’Œ@PostAuthorizeä¸¤ä¸ªæ³¨è§£
-// é¡¾åæ€ä¹‰ï¼Œ@PreAuthorizeæ³¨è§£ä¼šåœ¨æ–¹æ³•æ‰§è¡Œå‰è¿›è¡ŒéªŒè¯ï¼Œè€Œ@PostAuthorize æ³¨è§£åœ¨æ–¹æ³•æ‰§è¡Œåè¿›è¡ŒéªŒè¯ã€‚
-//securedEnabled=trueä¼šè§£é”@Securedæ³¨è§£ã€‚
+//prePostEnabled=true»á½âËø@PreAuthorizeºÍ@PostAuthorizeÁ½¸ö×¢½â
+// ¹ËÃûË¼Òå£¬@PreAuthorize×¢½â»áÔÚ·½·¨Ö´ĞĞÇ°½øĞĞÑéÖ¤£¬¶ø@PostAuthorize ×¢½âÔÚ·½·¨Ö´ĞĞºó½øĞĞÑéÖ¤¡£
+//securedEnabled=true»á½âËø@Secured×¢½â¡£
 public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
 
     @Bean
     PasswordEncoder passwordEncoder(){
-        //å¯†ç åŠ å¯†
+        //ÃÜÂë¼ÓÃÜ
         return new BCryptPasswordEncoder();
     }
 
@@ -49,7 +49,7 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //urlä¸º/admin/çš„éœ€è¦adminè§’è‰²ï¼Œ/user/çš„éœ€è¦adminæˆ–è€…userï¼Œ/db/çš„éœ€è¦adminå’Œdbaè§’è‰²
+        //urlÎª/admin/µÄĞèÒªadmin½ÇÉ«£¬/user/µÄĞèÒªadmin»òÕßuser£¬/db/µÄĞèÒªadminºÍdba½ÇÉ«
 
         http.authorizeRequests()
                 .antMatchers("/admin/**")
@@ -62,10 +62,10 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .formLogin().permitAll()
-                .loginPage("/login.html") //è‡ªå®šä¹‰ç™»é™†é¡µé¢
-                .loginProcessingUrl("/mylogin")//è‡ªå®šä¹‰ç™»é™†é¡µé¢çš„ç™»é™†action
+                .loginPage("/login.html") //×Ô¶¨ÒåµÇÂ½Ò³Ãæ
+                .loginProcessingUrl("/mylogin")//×Ô¶¨ÒåµÇÂ½Ò³ÃæµÄµÇÂ½action
 
-                .successHandler(new AuthenticationSuccessHandler() {//ç™»é™†æˆåŠŸå
+                .successHandler(new AuthenticationSuccessHandler() {//µÇÂ½³É¹¦ºó
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest req,
                                                         HttpServletResponse resp,
@@ -85,7 +85,7 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                 })
 
-                .failureHandler(new AuthenticationFailureHandler() {//ç™»é™†å¤±è´¥å
+                .failureHandler(new AuthenticationFailureHandler() {//µÇÂ½Ê§°Üºó
                     @Override
                     public void onAuthenticationFailure(HttpServletRequest req,
                                                         HttpServletResponse resp,
@@ -97,17 +97,17 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
                         Map<String, Object> map = new HashMap<>();
                         map.put("status", 401);
                         if (e instanceof LockedException) {
-                            map.put("msg", "è´¦æˆ·è¢«é”å®šï¼Œç™»å½•å¤±è´¥!");
+                            map.put("msg", "ÕË»§±»Ëø¶¨£¬µÇÂ¼Ê§°Ü!");
                         } else if (e instanceof BadCredentialsException) {
-                            map.put("msg", "è´¦æˆ·åæˆ–å¯†ç è¾“å…¥é”™è¯¯ï¼Œç™»å½•å¤±è´¥!");
+                            map.put("msg", "ÕË»§Ãû»òÃÜÂëÊäÈë´íÎó£¬µÇÂ¼Ê§°Ü!");
                         } else if (e instanceof DisabledException) {
-                            map.put("msg", "è´¦æˆ·è¢«ç¦ç”¨ï¼Œç™»å½•å¤±è´¥!");
+                            map.put("msg", "ÕË»§±»½ûÓÃ£¬µÇÂ¼Ê§°Ü!");
                         } else if (e instanceof AccountExpiredException) {
-                            map.put("msg", "è´¦æˆ·å·²è¿‡æœŸï¼Œç™»å½•å¤±è´¥!");
+                            map.put("msg", "ÕË»§ÒÑ¹ıÆÚ£¬µÇÂ¼Ê§°Ü!");
                         } else if (e instanceof CredentialsExpiredException) {
-                            map.put("msg", "å¯†ç å·²è¿‡æœŸï¼Œç™»å½•å¤±è´¥!");
+                            map.put("msg", "ÃÜÂëÒÑ¹ıÆÚ£¬µÇÂ¼Ê§°Ü!");
                         } else {
-                            map.put("msg", "ç™»å½•å¤±è´¥!");
+                            map.put("msg", "µÇÂ¼Ê§°Ü!");
                         }
                         ObjectMapper om = new ObjectMapper();
                         out.write(om.writeValueAsString(map));
@@ -117,11 +117,11 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .and()
 
-                .logout()//å¼€å¯æ³¨é”€ç™»é™†
-                .logoutUrl("/logout")//æ³¨é”€ç™»é™†è¯·æ±‚url
-                .clearAuthentication(true)//æ¸…é™¤èº«ä»½ä¿¡æ¯
-                .invalidateHttpSession(true)//sessionå¤±æ•ˆ
-                .addLogoutHandler(new LogoutHandler() {//æ³¨é”€å¤„ç†
+                .logout()//¿ªÆô×¢ÏúµÇÂ½
+                .logoutUrl("/logout")//×¢ÏúµÇÂ½ÇëÇóurl
+                .clearAuthentication(true)//Çå³ıÉí·İĞÅÏ¢
+                .invalidateHttpSession(true)//sessionÊ§Ğ§
+                .addLogoutHandler(new LogoutHandler() {//×¢Ïú´¦Àí
                     @Override
                     public void logout(HttpServletRequest req,
                                        HttpServletResponse resp,
@@ -129,13 +129,13 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                     }
                 })
-                .logoutSuccessHandler(new LogoutSuccessHandler() { //æ³¨é”€æˆåŠŸå¤„ç†
+                .logoutSuccessHandler(new LogoutSuccessHandler() { //×¢Ïú³É¹¦´¦Àí
                     @Override
                     public void onLogoutSuccess(HttpServletRequest req,
                                                 HttpServletResponse resp,
                                                 Authentication auth)
                             throws IOException {
-                        resp.sendRedirect("/login.html");//è·³è½¬åˆ°è‡ªå®šä¹‰ç™»é™†é¡µé¢
+                        resp.sendRedirect("/login.html");//Ìø×ªµ½×Ô¶¨ÒåµÇÂ½Ò³Ãæ
                     }
                 })
                 .and()

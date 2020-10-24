@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.security.mapperr")//ä½¿ç”¨MapperScanæ‰¹é‡æ‰«ææ‰€æœ‰çš„Mapperæ¥å£ï¼›
+@MapperScan("com.security.mapperr")//Ê¹ÓÃMapperScanÅúÁ¿É¨ÃèËùÓĞµÄMapper½Ó¿Ú£»
 public class SpringbootSecurityApplication {
 
 	public static void main(String[] args) {
